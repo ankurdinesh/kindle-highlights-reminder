@@ -1,0 +1,44 @@
+services:
+  # Backend API
+  - type: web
+    name: kindle-highlights-backend
+    runtime: node
+    env: node
+    region: oregon
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kindle-highlights-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ALLOWED_ORIGINS
+        sync: false # Set this in Render dashboard
+
+  # Frontend
+  - type: web
+    name: kindle-highlights-frontend
+    runtime: static
+    env: static
+    region: oregon
+    buildCommand: cd daily-highlight && npm install && npm run build
+    staticPublishPath: ./daily-highlight/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://kindle-highlights-backend.onrender.com/api
+
+# Database
+databases:
+  - name: kindle-highlights-db
+    databaseName: kindle_highlights
+    user: kindle_user
+    region: oregon
+    plan: free
