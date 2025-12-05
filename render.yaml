@@ -1,9 +1,10 @@
 services:
-  # Backend API
+  # Backend API (Free Tier)
   - type: web
     name: kindle-highlights-backend
     runtime: node
     env: node
+    plan: free  # Free tier - spins down after 15 min inactivity
     region: oregon
     buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm start
@@ -11,7 +12,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
+        value: 10000
       - key: DATABASE_URL
         fromDatabase:
           name: kindle-highlights-db
@@ -23,7 +24,7 @@ services:
       - key: ALLOWED_ORIGINS
         sync: false # Set this in Render dashboard
 
-  # Frontend
+  # Frontend (Free Static Site)
   - type: web
     name: kindle-highlights-frontend
     runtime: static
@@ -34,7 +35,7 @@ services:
       - key: VITE_API_URL
         value: https://kindle-highlights-backend.onrender.com/api
 
-# Database
+# Database (Free Tier - 1GB storage, 90 days expiry)
 databases:
   - name: kindle-highlights-db
     databaseName: kindle_highlights
