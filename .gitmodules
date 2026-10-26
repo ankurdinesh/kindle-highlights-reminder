@@ -1,0 +1,3 @@
+[submodule "daily-highlight"]
+    path = daily-highlight
+    url = https://github.com/ankurdinesh/daily-highlight.git
