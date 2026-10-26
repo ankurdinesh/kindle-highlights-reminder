@@ -6,9 +6,11 @@ services:
     env: node
     plan: free  # Free tier - spins down after 15 min inactivity
     region: oregon
-    buildCommand: cd backend && npm install && npm run build
+    buildCommand: cd backend && npm ci --include=dev && npm run build
     startCommand: cd backend && npm start
     envVars:
+      - key: NODE_VERSION
+        value: "22.23.4"
       - key: NODE_ENV
         value: production
       - key: PORT
@@ -32,6 +34,8 @@ services:
     buildCommand: cd daily-highlight && npm install && npm run build
     staticPublishPath: ./daily-highlight/dist
     envVars:
+      - key: NODE_VERSION
+        value: "22.23.4"
       - key: VITE_API_URL
         value: https://kindle-highlights-backend.onrender.com/api
 
